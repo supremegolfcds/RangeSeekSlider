@@ -10,6 +10,52 @@ import UIKit
 
 @IBDesignable open class RangeSeekSlider: UIControl {
 
+    open func resetSlider(){
+        handleTracking = .none
+        self.minValue = 0.0
+        self.selectedMinValue = 0.0
+        self.maxValue = 150.0
+        self.selectedMaxValue = 150.0
+        self.previousStepMinValue = 0.0
+        self.previousStepMaxValue = 0.0
+        
+        self.leftHandle.backgroundColor = UIColor.white.cgColor
+        self.leftHandle.borderColor = UIColor.white.cgColor
+        self.rightHandle.backgroundColor = UIColor.white.cgColor
+        self.rightHandle.borderColor = UIColor.white.cgColor
+        
+        self.refresh()
+    }
+    
+    open func addWhiteColor() {
+        self.leftHandle.backgroundColor = UIColor.white.cgColor
+        self.leftHandle.borderColor = UIColor.white.cgColor
+        self.rightHandle.backgroundColor = UIColor.white.cgColor
+        self.rightHandle.borderColor = UIColor.white.cgColor
+    }
+    
+    open func resetDistanceSlider(){
+        handleTracking = .none
+        self.minValue = 0.0
+        self.selectedMinValue = 0.0
+        self.maxValue = 150.0
+        self.selectedMaxValue = 150.0
+        self.previousStepMinValue = 0.0
+        self.previousStepMaxValue = 0.0
+        self.colorBetweenHandles = UIColor.gray
+        self.handleColor = UIColor.gray
+        self.tintColor = UIColor.gray
+        self.initialColor = UIColor.gray
+        self.handleBorderColor = UIColor.gray
+        
+        self.leftHandle.backgroundColor = UIColor.gray.cgColor
+        self.leftHandle.borderColor = UIColor.gray.cgColor
+        self.rightHandle.backgroundColor = UIColor.gray.cgColor
+        self.rightHandle.borderColor = UIColor.gray.cgColor
+        
+        self.refresh()
+    }
+    
     // MARK: - initializers
 
     public required init?(coder aDecoder: NSCoder) {
