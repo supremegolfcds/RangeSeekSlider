@@ -12,6 +12,79 @@ import UIKit
 
     // MARK: - initializers
 
+    open func resetSlider(){
+        handleTracking = .none
+        self.minValue = 0.0
+        self.selectedMinValue = 0.0
+        self.maxValue = 150.0
+        self.selectedMaxValue = 150.0
+        self.previousStepMinValue = 0.0
+        self.previousStepMaxValue = 0.0
+        
+        self.leftHandle.backgroundColor = UIColor.white.cgColor
+        self.leftHandle.borderColor = UIColor.white.cgColor
+        self.rightHandle.backgroundColor = UIColor.white.cgColor
+        self.rightHandle.borderColor = UIColor.white.cgColor
+        
+        self.refresh()
+    }
+    
+    open func addWhiteColor() {
+        self.leftHandle.backgroundColor = UIColor.white.cgColor
+        self.leftHandle.borderColor = UIColor.white.cgColor
+        self.rightHandle.backgroundColor = UIColor.white.cgColor
+        self.rightHandle.borderColor = UIColor.white.cgColor
+    }
+    
+    open func resetSlider1(){
+        handleTracking = .none
+        self.minValue = 0.0
+        self.selectedMinValue = 0.0
+        self.maxValue = 150.0
+        self.selectedMaxValue = 150.0
+        self.previousStepMinValue = 0.0
+        self.previousStepMaxValue = 0.0
+        //  self.refresh()
+        self.colorBetweenHandles = UIColor.gray
+        //        self.handleColor = UIColor.gray
+        self.tintColor = UIColor.gray
+        self.initialColor = UIColor.gray
+        //        self.handleBorderColor = UIColor.gray
+        
+        self.leftHandle.backgroundColor = UIColor.gray.cgColor
+        self.leftHandle.borderColor = UIColor.gray.cgColor
+        self.rightHandle.backgroundColor = UIColor.gray.cgColor
+        self.rightHandle.borderColor = UIColor.gray.cgColor
+        
+        self.refresh()
+        
+    }
+    
+    
+    open func resetDistanceSlider(){
+        handleTracking = .none
+        self.minValue = 0.0
+        self.selectedMinValue = 0.0
+        self.maxValue = 150.0
+        self.selectedMaxValue = 150.0
+        self.previousStepMinValue = 0.0
+        self.previousStepMaxValue = 0.0
+        //  self.refresh()
+        self.colorBetweenHandles = UIColor.gray
+        self.handleColor = UIColor.gray
+        self.tintColor = UIColor.gray
+        self.initialColor = UIColor.gray
+        self.handleBorderColor = UIColor.gray
+        
+        self.leftHandle.backgroundColor = UIColor.gray.cgColor
+        self.leftHandle.borderColor = UIColor.gray.cgColor
+        self.rightHandle.backgroundColor = UIColor.gray.cgColor
+        self.rightHandle.borderColor = UIColor.gray.cgColor
+        
+        self.refresh()
+        
+    }
+    
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
@@ -86,7 +159,7 @@ import UIKit
 
     /// Each handle in the slider has a label above it showing the current selected value. By default, this is displayed as a decimal format.
     /// You can update this default here by updating properties of NumberFormatter. For example, you could supply a currency style, or a prefix or suffix.
-    open var numberFormatter: NumberFormatter = {
+    open let numberFormatter: NumberFormatter = {
         let formatter: NumberFormatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 0
@@ -159,18 +232,12 @@ import UIKit
     /// Handle slider with custom image, you can set custom image for your handle
     @IBInspectable open var handleImage: UIImage? {
         didSet {
-            guard let image = handleImage else {
-                return
-            }
-            
-            var handleFrame = CGRect.zero
-            handleFrame.size = image.size
-            
+            let handleFrame: CGRect = CGRect(x: 0.0, y: 0.0, width: 36.0, height: 36.0)
             leftHandle.frame = handleFrame
-            leftHandle.contents = image.cgImage
-
+            leftHandle.contents = handleImage?.cgImage
+            
             rightHandle.frame = handleFrame
-            rightHandle.contents = image.cgImage
+            rightHandle.contents = handleImage?.cgImage
         }
     }
 
@@ -185,7 +252,7 @@ import UIKit
     }
 
     /// Selected handle diameter multiplier (default 1.7)
-    @IBInspectable open var selectedHandleDiameterMultiplier: CGFloat = 1.7
+    @IBInspectable open var selectedHandleDiameterMultiplier: CGFloat = 1.0
 
     /// Set the slider line height (default 1.0)
     @IBInspectable open var lineHeight: CGFloat = 1.0 {
@@ -374,7 +441,7 @@ import UIKit
 
     open override func index(ofAccessibilityElement element: Any) -> Int {
         guard let element = element as? UIAccessibilityElement else { return 0 }
-        return accessibleElements.firstIndex(of: element) ?? 0
+        return accessibleElements.index(of: element) ?? 0
     }
 
 
@@ -412,7 +479,7 @@ import UIKit
 
         // draw the text labels
         let labelFontSize: CGFloat = 12.0
-        let labelFrame: CGRect = CGRect(x: 0.0, y: 50.0, width: 75.0, height: 14.0)
+        let labelFrame: CGRect = CGRect(x: 0.0, y: 0.0, width: 75.0, height: 14.0)
 
         minLabelFont = UIFont.systemFont(ofSize: labelFontSize)
         minLabel.alignmentMode = CATextLayerAlignmentMode.center
@@ -489,11 +556,11 @@ import UIKit
         }
 
         if let nsstring = minLabel.string as? NSString {
-            minLabelTextSize = nsstring.size(withAttributes: [.font: minLabelFont])
+            minLabelTextSize = nsstring.size(withAttributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font): minLabelFont]))
         }
 
         if let nsstring = maxLabel.string as? NSString {
-            maxLabelTextSize = nsstring.size(withAttributes: [.font: maxLabelFont])
+            maxLabelTextSize = nsstring.size(withAttributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font): maxLabelFont]))
         }
     }
 
@@ -506,10 +573,10 @@ import UIKit
             sliderLine.backgroundColor = initialColor
 
             let color: CGColor = (handleImage == nil) ? initialColor : UIColor.clear.cgColor
-            leftHandle.backgroundColor = color
-            leftHandle.borderColor = color
-            rightHandle.backgroundColor = color
-            rightHandle.borderColor = color
+//            leftHandle.backgroundColor = color
+//            leftHandle.borderColor = color
+//            rightHandle.backgroundColor = color
+//            rightHandle.borderColor = color
         } else {
             let tintCGColor: CGColor = tintColor.cgColor
             minLabel.foregroundColor = minLabelColor?.cgColor ?? tintCGColor
@@ -562,10 +629,10 @@ import UIKit
         let minSpacingBetweenLabels: CGFloat = 8.0
 
         let newMinLabelCenter: CGPoint = CGPoint(x: leftHandle.frame.midX,
-                                                 y: leftHandle.frame.maxY + (minLabelTextSize.height/2) + labelPadding)
+                                                 y: leftHandle.frame.minY - (minLabelTextSize.height / 2.0) - labelPadding)
 
         let newMaxLabelCenter: CGPoint = CGPoint(x: rightHandle.frame.midX,
-                                                 y: rightHandle.frame.maxY + (maxLabelTextSize.height/2) + labelPadding)
+                                                 y: rightHandle.frame.minY - (maxLabelTextSize.height / 2.0) - labelPadding)
         
         let newLeftMostXInMaxLabel: CGFloat = newMaxLabelCenter.x - maxLabelTextSize.width / 2.0
         let newRightMostXInMinLabel: CGFloat = newMinLabelCenter.x + minLabelTextSize.width / 2.0
@@ -759,4 +826,15 @@ private extension CGPoint {
         let distY: CGFloat = to.y - y
         return sqrt(distX * distX + distY * distY)
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+    guard let input = input else { return nil }
+    return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+    return input.rawValue
 }
